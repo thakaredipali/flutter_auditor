@@ -2,14 +2,10 @@ import 'security_issue.dart';
 
 /// Represents the result of a security audit.
 class AuditResult {
-  /// Unique identifier of the audit.
-  final String auditId;
-
   /// Security issues found during the audit.
   final List<SecurityIssue> issues;
 
   const AuditResult({
-    required this.auditId,
     required this.issues,
   });
 

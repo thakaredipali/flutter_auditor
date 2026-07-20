@@ -9,6 +9,24 @@ class ProjectContext {
     required this.rootDirectory,
   });
 
-  /// Returns the absolute project path.
+  /// Absolute path to the project.
   String get rootPath => rootDirectory.path;
+
+  /// pubspec.yaml
+  File get pubspec =>
+      File('$rootPath/pubspec.yaml');
+
+  /// lib directory
+  Directory get libDirectory =>
+      Directory('$rootPath/lib');
+
+  /// android directory
+  Directory get androidDirectory =>
+      Directory('$rootPath/android');
+
+  /// AndroidManifest.xml
+  File get androidManifest =>
+      File(
+        '$rootPath/android/app/src/main/AndroidManifest.xml',
+      );
 }

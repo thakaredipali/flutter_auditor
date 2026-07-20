@@ -1,3 +1,5 @@
+import 'package:flutter_audit/audits/android/allow_backup_audit.dart';
+
 import '../models/audit.dart';
 
 /// Provides all available security audits.
@@ -6,7 +8,7 @@ class AuditRegistry {
 
   List<Audit> getAudits() {
     return [
-      // Audits will be registered here.
+      AllowBackupAudit(),
     ];
   }
 }

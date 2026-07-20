@@ -36,7 +36,20 @@ final engine = AuditEngine(
 );
   final results = await engine.run(context);
 
-  print('Executed ${results.length} audits.');
+  for (final result in results) {
+  if (!result.hasIssues) {
+    print('✓ No issues found');
+    continue;
+  }
+
+  for (final issue in result.issues) {
+    print('✗ ${issue.title}');
+    print('  Severity : ${issue.severity.label}');
+    print('  File     : ${issue.file}');
+    print('  Fix      : ${issue.recommendation}');
+    print('');
+  }
+}
 
   return 0;
 }
