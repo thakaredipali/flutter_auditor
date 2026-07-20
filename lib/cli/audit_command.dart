@@ -1,6 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:flutter_audit/audits/audit_registry.dart';
 import 'package:flutter_audit/engine/audit_engine.dart';
+import 'package:flutter_audit/reporter/console_reporter.dart';
 import 'package:flutter_audit/scanner/project_scanner.dart';
 import 'package:flutter_audit/utils/constants.dart';
 
@@ -34,22 +35,11 @@ final registry = const AuditRegistry();
 final engine = AuditEngine(
   audits: registry.getAudits(),
 );
-  final results = await engine.run(context);
+final results = await engine.run(context);
 
-  for (final result in results) {
-  if (!result.hasIssues) {
-    print('✓ No issues found');
-    continue;
-  }
+final reporter = const ConsoleReporter();
 
-  for (final issue in result.issues) {
-    print('✗ ${issue.title}');
-    print('  Severity : ${issue.severity.label}');
-    print('  File     : ${issue.file}');
-    print('  Fix      : ${issue.recommendation}');
-    print('');
-  }
-}
+reporter.printReport(results);
 
   return 0;
 }
