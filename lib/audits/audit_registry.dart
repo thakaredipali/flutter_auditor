@@ -1,4 +1,5 @@
 import 'package:flutter_audit/audits/android/allow_backup_audit.dart';
+import 'package:flutter_audit/audits/android/cleartext_traffic_audit.dart';
 import 'package:flutter_audit/audits/android/debuggable_audit.dart';
 
 import '../models/audit.dart';
@@ -10,6 +11,7 @@ class AuditRegistry {
   List<Audit> getAudits() {
     return [
       AllowBackupAudit(),
+      CleartextTrafficAudit(),
       DebuggableAudit(),
     ];
   }
