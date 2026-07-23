@@ -5,6 +5,7 @@ import 'package:flutter_audit/audits/android/debuggable_audit.dart';
 import 'package:flutter_audit/audits/android/exported_components_audit.dart';
 import 'package:flutter_audit/audits/android/manifest_permission_audit.dart';
 import 'package:flutter_audit/audits/android/network_security_config_audit.dart';
+import 'package:flutter_audit/audits/secrets/hardcoded_secrets_audit.dart';
 
 import '../models/audit.dart';
 
@@ -20,7 +21,8 @@ class AuditRegistry {
       DebuggableAudit(),
       ManifestPermissionAudit(),
       NetworkSecurityConfigAudit(),
-      BackupRulesAudit()
+      BackupRulesAudit(),
+      HardcodedSecretsAudit(),
     ];
   }
 }
