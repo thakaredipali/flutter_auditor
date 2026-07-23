@@ -29,4 +29,12 @@ class ProjectContext {
       File(
         '$rootPath/android/app/src/main/AndroidManifest.xml',
       );
+
+  /// ios directory
+  Directory get iosDirectory =>
+      Directory('$rootPath/ios');
+
+  /// Info.plist
+  File get iosInfoPlist =>
+      File('$rootPath/ios/Runner/Info.plist');
 }

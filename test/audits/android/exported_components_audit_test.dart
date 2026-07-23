@@ -20,7 +20,7 @@ final context = await createProjectContext(
     <application>
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 </manifest>
 ''',
