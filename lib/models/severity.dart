@@ -21,4 +21,9 @@ enum Severity {
         return 'Info';
     }
   }
+
+  /// True if this severity is at least as severe as [threshold] (lower
+  /// index in [Severity.values] means more severe: critical is the most
+  /// severe, info the least).
+  bool isAtLeastAsSevereAs(Severity threshold) => index <= threshold.index;
 }
