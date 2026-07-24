@@ -20,6 +20,7 @@ class ConsoleReporter {
         print('  Severity : ${issue.severity.label}');
         print('  File     : ${issue.file}');
         print('  Fix      : ${issue.recommendation}');
+        print('  Desc     : ${issue.description}');
         print('');
       }
     }

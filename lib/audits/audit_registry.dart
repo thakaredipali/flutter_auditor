@@ -5,6 +5,8 @@ import 'package:flutter_audit/audits/android/debuggable_audit.dart';
 import 'package:flutter_audit/audits/android/exported_components_audit.dart';
 import 'package:flutter_audit/audits/android/manifest_permission_audit.dart';
 import 'package:flutter_audit/audits/android/network_security_config_audit.dart';
+import 'package:flutter_audit/audits/dependencies/dependency_hygiene_audit.dart';
+import 'package:flutter_audit/audits/dependencies/unused_dependency_audit.dart';
 import 'package:flutter_audit/audits/ios/app_transport_security_audit.dart';
 import 'package:flutter_audit/audits/ios/file_sharing_audit.dart';
 import 'package:flutter_audit/audits/ios/usage_description_audit.dart';
@@ -33,6 +35,8 @@ class AuditRegistry {
       AppTransportSecurityAudit(),
       FileSharingAudit(),
       UsageDescriptionAudit(),
+      DependencyHygieneAudit(),
+      UnusedDependencyAudit(),
     ];
   }
 }
