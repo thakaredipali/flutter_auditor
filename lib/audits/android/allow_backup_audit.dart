@@ -25,31 +25,28 @@ class AllowBackupAudit extends Audit {
     final File manifest = context.androidManifest;
 
     if (!manifest.existsSync()) {
-      return const AuditResult(
-        issues: [],
-      );
+      return const AuditResult(issues: []);
     }
 
-final document = await AndroidManifestHelper.load(context);
+    final document = await AndroidManifestHelper.load(context);
 
-if (document == null) {
-  return const AuditResult(issues: []);
-}
+    if (document == null) {
+      return const AuditResult(issues: []);
+    }
 
-final application =
-    document.rootElement.getElement('application');
+    final application = document.rootElement.getElement('application');
 
-if (application == null) {
-  return const AuditResult(issues: []);
-}
+    if (application == null) {
+      return const AuditResult(issues: []);
+    }
 
-final allowBackup =
-    application.getAttribute('allowBackup', namespace: 'http://schemas.android.com/apk/res/android');
+    final allowBackup = application.getAttribute(
+      'allowBackup',
+      namespace: 'http://schemas.android.com/apk/res/android',
+    );
 
-    if (allowBackup!= 'true') {
-      return const AuditResult(
-        issues: [],
-      );
+    if (allowBackup != 'true') {
+      return const AuditResult(issues: []);
     }
 
     return AuditResult(
@@ -57,8 +54,7 @@ final allowBackup =
         SecurityIssue(
           id: id,
           title: 'Android Backup Enabled',
-          description:
-              'The application allows Android backups.',
+          description: 'The application allows Android backups.',
           severity: Severity.high,
           file: manifest.path,
           recommendation:

@@ -93,8 +93,7 @@ void main() {
       expect(result.issues.first.severity, Severity.medium);
     });
 
-    test('detects an exception domain allowing insecure HTTP loads',
-        () async {
+    test('detects an exception domain allowing insecure HTTP loads', () async {
       final context = await createProjectContextWithFiles(
         files: {
           'ios/Runner/Info.plist': '''
@@ -128,11 +127,12 @@ void main() {
       expect(result.issues.first.severity, Severity.high);
     });
 
-    test('detects a weak minimum TLS version for an exception domain',
-        () async {
-      final context = await createProjectContextWithFiles(
-        files: {
-          'ios/Runner/Info.plist': '''
+    test(
+      'detects a weak minimum TLS version for an exception domain',
+      () async {
+        final context = await createProjectContextWithFiles(
+          files: {
+            'ios/Runner/Info.plist': '''
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
@@ -150,18 +150,19 @@ void main() {
 </dict>
 </plist>
 ''',
-        },
-      );
+          },
+        );
 
-      final result = await audit.run(context);
+        final result = await audit.run(context);
 
-      expect(result.issues.length, 1);
-      expect(
-        result.issues.first.title,
-        'Weak Minimum TLS Version for "legacy.example.com"',
-      );
-      expect(result.issues.first.severity, Severity.medium);
-    });
+        expect(result.issues.length, 1);
+        expect(
+          result.issues.first.title,
+          'Weak Minimum TLS Version for "legacy.example.com"',
+        );
+        expect(result.issues.first.severity, Severity.medium);
+      },
+    );
 
     test('does not flag an exception domain pinned to TLSv1.2', () async {
       final context = await createProjectContextWithFiles(

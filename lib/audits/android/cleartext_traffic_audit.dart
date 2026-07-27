@@ -24,25 +24,23 @@ class CleartextTrafficAudit extends Audit {
     if (!await manifest.exists()) {
       return const AuditResult(issues: []);
     }
-final document = await AndroidManifestHelper.load(context);
+    final document = await AndroidManifestHelper.load(context);
 
-if (document == null) {
-  return const AuditResult(issues: []);
-}
+    if (document == null) {
+      return const AuditResult(issues: []);
+    }
 
-final application =
-    document.rootElement.getElement('application');
+    final application = document.rootElement.getElement('application');
 
-if (application == null) {
-  return const AuditResult(issues: []);
-}
+    if (application == null) {
+      return const AuditResult(issues: []);
+    }
 
-final cleartext =
-    application.getAttribute(
+    final cleartext = application.getAttribute(
       'usesCleartextTraffic',
       namespace: 'http://schemas.android.com/apk/res/android',
     );
-    
+
     if (cleartext != 'true') {
       return const AuditResult(issues: []);
     }
@@ -52,8 +50,7 @@ final cleartext =
         SecurityIssue(
           id: id,
           title: name,
-          description:
-              'The application allows unencrypted HTTP traffic.',
+          description: 'The application allows unencrypted HTTP traffic.',
           severity: Severity.high,
           file: manifest.path,
           recommendation:

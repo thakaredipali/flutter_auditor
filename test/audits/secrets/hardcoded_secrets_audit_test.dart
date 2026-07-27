@@ -62,11 +62,12 @@ class Config {
       expect(result.issues.first.severity, Severity.high);
     });
 
-    test('ignores API endpoint path constants named like credentials',
-        () async {
-      final context = await createProjectContextWithFiles(
-        files: {
-          'lib/api_paths.dart': r'''
+    test(
+      'ignores API endpoint path constants named like credentials',
+      () async {
+        final context = await createProjectContextWithFiles(
+          files: {
+            'lib/api_paths.dart': r'''
 class ApiPaths {
   static const String authApiPath = "/api/v1/auth";
   static const String generateAccessToken =
@@ -74,13 +75,14 @@ class ApiPaths {
   static const String keyExchange = "$authApiPath/key-exchange";
 }
 ''',
-        },
-      );
+          },
+        );
 
-      final result = await audit.run(context);
+        final result = await audit.run(context);
 
-      expect(result.issues, isEmpty);
-    });
+        expect(result.issues, isEmpty);
+      },
+    );
 
     test('ignores placeholder values', () async {
       final context = await createProjectContextWithFiles(
@@ -116,24 +118,26 @@ MIIEpAIBAAKCAQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
       expect(result.issues.first.severity, Severity.critical);
     });
 
-    test('does not duplicate a finding already caught by a specific pattern',
-        () async {
-      final context = await createProjectContextWithFiles(
-        files: {
-          'lib/deep/nested_config.dart': '''
+    test(
+      'does not duplicate a finding already caught by a specific pattern',
+      () async {
+        final context = await createProjectContextWithFiles(
+          files: {
+            'lib/deep/nested_config.dart': '''
 class Nested {
   static const token = "AKIAABCDEFGHIJKLMNOP";
 }
 ''',
-        },
-      );
+          },
+        );
 
-      final result = await audit.run(context);
+        final result = await audit.run(context);
 
-      expect(result.issues.length, 1);
-      expect(result.issues.first.file, endsWith('nested_config.dart'));
-      expect(result.issues.first.line, 2);
-    });
+        expect(result.issues.length, 1);
+        expect(result.issues.first.file, endsWith('nested_config.dart'));
+        expect(result.issues.first.line, 2);
+      },
+    );
 
     test('scans dart files in nested directories', () async {
       final context = await createProjectContextWithFiles(

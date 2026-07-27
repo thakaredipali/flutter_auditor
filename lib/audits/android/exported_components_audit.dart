@@ -9,7 +9,7 @@ import '../../utils/android_manifest_helper.dart';
 
 class ExportedComponentsAudit extends Audit {
   @override
- String get id => 'android_exported_components';
+  String get id => 'android_exported_components';
 
   @override
   String get name => 'Exported Components';
@@ -85,10 +85,7 @@ class ExportedComponentsAudit extends Audit {
       }
 
       final componentName =
-          component.getAttribute(
-            'name',
-            namespace: androidNamespace,
-          ) ??
+          component.getAttribute('name', namespace: androidNamespace) ??
           'Unknown';
 
       issues.add(

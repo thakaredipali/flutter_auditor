@@ -54,11 +54,12 @@ class ManifestPermissionAudit extends Audit {
       if (permissionInfo == null) {
         continue;
       }
-      
+
       if (permissionInfo.risk == PermissionRisk.low) {
-        // TODO: Ignore for now.
+        // Low-risk permissions are common and rarely actionable, so they're
+        // excluded here to keep findings focused on high/medium risk.
         continue;
-       }
+      }
 
       issues.add(
         SecurityIssue(

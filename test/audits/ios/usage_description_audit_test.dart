@@ -20,17 +20,18 @@ void main() {
       expect(result.issues, isEmpty);
     });
 
-    test('returns no issues for a clean plist with no relevant dependencies',
-        () async {
-      final context = await createProjectContextWithFiles(
-        files: {
-          'pubspec.yaml': '''
+    test(
+      'returns no issues for a clean plist with no relevant dependencies',
+      () async {
+        final context = await createProjectContextWithFiles(
+          files: {
+            'pubspec.yaml': '''
 name: sample_app
 dependencies:
   flutter:
     sdk: flutter
 ''',
-          'ios/Runner/Info.plist': '''
+            'ios/Runner/Info.plist': '''
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
@@ -39,13 +40,14 @@ dependencies:
 </dict>
 </plist>
 ''',
-        },
-      );
+          },
+        );
 
-      final result = await audit.run(context);
+        final result = await audit.run(context);
 
-      expect(result.issues, isEmpty);
-    });
+        expect(result.issues, isEmpty);
+      },
+    );
 
     group('empty values (check 1)', () {
       test('detects an empty usage-description string', () async {
@@ -96,11 +98,11 @@ dependencies:
 
     group('required pairings (check 3)', () {
       test(
-          'detects NSLocationAlwaysAndWhenInUseUsageDescription without NSLocationWhenInUseUsageDescription',
-          () async {
-        final context = await createProjectContextWithFiles(
-          files: {
-            'ios/Runner/Info.plist': '''
+        'detects NSLocationAlwaysAndWhenInUseUsageDescription without NSLocationWhenInUseUsageDescription',
+        () async {
+          final context = await createProjectContextWithFiles(
+            files: {
+              'ios/Runner/Info.plist': '''
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
@@ -109,18 +111,19 @@ dependencies:
 </dict>
 </plist>
 ''',
-          },
-        );
+            },
+          );
 
-        final result = await audit.run(context);
+          final result = await audit.run(context);
 
-        expect(result.issues.length, 1);
-        expect(
-          result.issues.first.title,
-          'Missing Paired Usage Description: NSLocationWhenInUseUsageDescription',
-        );
-        expect(result.issues.first.severity, Severity.high);
-      });
+          expect(result.issues.length, 1);
+          expect(
+            result.issues.first.title,
+            'Missing Paired Usage Description: NSLocationWhenInUseUsageDescription',
+          );
+          expect(result.issues.first.severity, Severity.high);
+        },
+      );
 
       test('does not flag when both location keys are present', () async {
         final context = await createProjectContextWithFiles(
@@ -146,8 +149,7 @@ dependencies:
     });
 
     group('missing for used packages (check 2)', () {
-      test('detects a missing key required by a pubspec dependency',
-          () async {
+      test('detects a missing key required by a pubspec dependency', () async {
         final context = await createProjectContextWithFiles(
           files: {
             'pubspec.yaml': '''
@@ -182,26 +184,25 @@ dependencies:
         );
         expect(
           result.issues
-              .firstWhere(
-                  (i) => i.title.contains('NSCameraUsageDescription'))
+              .firstWhere((i) => i.title.contains('NSCameraUsageDescription'))
               .severity,
           Severity.high,
         );
       });
 
       test(
-          'does not flag the Always location key just because geolocator is a dependency when only when-in-use is declared',
-          () async {
-        final context = await createProjectContextWithFiles(
-          files: {
-            'pubspec.yaml': '''
+        'does not flag the Always location key just because geolocator is a dependency when only when-in-use is declared',
+        () async {
+          final context = await createProjectContextWithFiles(
+            files: {
+              'pubspec.yaml': '''
 name: sample_app
 dependencies:
   flutter:
     sdk: flutter
   geolocator: ^10.0.0
 ''',
-            'ios/Runner/Info.plist': '''
+              'ios/Runner/Info.plist': '''
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
@@ -210,26 +211,27 @@ dependencies:
 </dict>
 </plist>
 ''',
-          },
-        );
+            },
+          );
 
-        final result = await audit.run(context);
+          final result = await audit.run(context);
 
-        expect(result.issues, isEmpty);
-      });
+          expect(result.issues, isEmpty);
+        },
+      );
 
       test(
-          'does not flag a key required by a package that is not a dependency',
-          () async {
-        final context = await createProjectContextWithFiles(
-          files: {
-            'pubspec.yaml': '''
+        'does not flag a key required by a package that is not a dependency',
+        () async {
+          final context = await createProjectContextWithFiles(
+            files: {
+              'pubspec.yaml': '''
 name: sample_app
 dependencies:
   flutter:
     sdk: flutter
 ''',
-            'ios/Runner/Info.plist': '''
+              'ios/Runner/Info.plist': '''
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
@@ -238,27 +240,28 @@ dependencies:
 </dict>
 </plist>
 ''',
-          },
-        );
+            },
+          );
 
-        final result = await audit.run(context);
+          final result = await audit.run(context);
 
-        expect(result.issues, isEmpty);
-      });
+          expect(result.issues, isEmpty);
+        },
+      );
 
       test(
-          'does not double-report a key already flagged by the pairing check',
-          () async {
-        final context = await createProjectContextWithFiles(
-          files: {
-            'pubspec.yaml': '''
+        'does not double-report a key already flagged by the pairing check',
+        () async {
+          final context = await createProjectContextWithFiles(
+            files: {
+              'pubspec.yaml': '''
 name: sample_app
 dependencies:
   flutter:
     sdk: flutter
   geolocator: ^10.0.0
 ''',
-            'ios/Runner/Info.plist': '''
+              'ios/Runner/Info.plist': '''
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
@@ -267,22 +270,25 @@ dependencies:
 </dict>
 </plist>
 ''',
-          },
-        );
+            },
+          );
 
-        final result = await audit.run(context);
+          final result = await audit.run(context);
 
-        final locationIssues = result.issues
-            .where((issue) =>
-                issue.title.contains('NSLocationWhenInUseUsageDescription'))
-            .toList();
+          final locationIssues = result.issues
+              .where(
+                (issue) =>
+                    issue.title.contains('NSLocationWhenInUseUsageDescription'),
+              )
+              .toList();
 
-        expect(locationIssues.length, 1);
-        expect(
-          locationIssues.first.title,
-          'Missing Paired Usage Description: NSLocationWhenInUseUsageDescription',
-        );
-      });
+          expect(locationIssues.length, 1);
+          expect(
+            locationIssues.first.title,
+            'Missing Paired Usage Description: NSLocationWhenInUseUsageDescription',
+          );
+        },
+      );
     });
   });
 }

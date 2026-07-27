@@ -21,6 +21,11 @@ import '../../utils/pub_lock_helper.dart';
 class DependencyHygieneAudit extends Audit {
   static final _nullSafetyMinSdk = Version(2, 12, 0);
 
+  /// Caps how many dependencies are checked against the pub.dev API at
+  /// once (each check makes 2 requests), so projects with many direct
+  /// dependencies don't open dozens of sockets in a single burst.
+  static const _maxConcurrentChecks = 8;
+
   final PubDevClient _client;
 
   DependencyHygieneAudit({PubDevClient? client})
@@ -48,13 +53,24 @@ class DependencyHygieneAudit extends Audit {
         .where((dependency) => dependency.isDirectMain && dependency.isHosted)
         .toList();
 
-    await Future.wait(
-      directHosted.map(
-        (dependency) => _checkDependency(dependency, context, issues),
-      ),
-    );
+    for (final batch in _chunked(directHosted, _maxConcurrentChecks)) {
+      await Future.wait(
+        batch.map(
+          (dependency) => _checkDependency(dependency, context, issues),
+        ),
+      );
+    }
 
     return AuditResult(issues: issues);
+  }
+
+  Iterable<List<LockedDependency>> _chunked(
+    List<LockedDependency> items,
+    int size,
+  ) sync* {
+    for (var i = 0; i < items.length; i += size) {
+      yield items.sublist(i, i + size > items.length ? items.length : i + size);
+    }
   }
 
   Future<void> _checkProjectSdkConstraint(

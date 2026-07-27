@@ -15,9 +15,7 @@ Future<ProjectContext> createProjectContext({
 
   await manifestFile.writeAsString(manifestContent);
 
-  return ProjectContext(
-    rootDirectory: tempDir,
-  );
+  return ProjectContext(rootDirectory: tempDir);
 }
 
 /// Creates a temporary project context populated with the given files.
@@ -34,7 +32,5 @@ Future<ProjectContext> createProjectContextWithFiles({
     await file.writeAsString(entry.value);
   }
 
-  return ProjectContext(
-    rootDirectory: tempDir,
-  );
+  return ProjectContext(rootDirectory: tempDir);
 }

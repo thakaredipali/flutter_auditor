@@ -76,22 +76,24 @@ final client = HttpClient()
       expect(result.issues.first.severity, Severity.critical);
     });
 
-    test('does not flag a certificate callback that verifies pinning',
-        () async {
-      final context = await createProjectContextWithFiles(
-        files: {
-          'lib/http_client.dart': '''
+    test(
+      'does not flag a certificate callback that verifies pinning',
+      () async {
+        final context = await createProjectContextWithFiles(
+          files: {
+            'lib/http_client.dart': '''
 final client = HttpClient()
   ..badCertificateCallback =
       (cert, host, port) => cert.sha1 == pinnedSha1;
 ''',
-        },
-      );
+          },
+        );
 
-      final result = await audit.run(context);
+        final result = await audit.run(context);
 
-      expect(result.issues, isEmpty);
-    });
+        expect(result.issues, isEmpty);
+      },
+    );
 
     test('detects a WebView SSL error bypass', () async {
       final context = await createProjectContextWithFiles(

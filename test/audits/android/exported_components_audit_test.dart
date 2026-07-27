@@ -13,9 +13,8 @@ void main() {
     });
 
     test('returns no issues when no components are exported', () async {
-
-final context = await createProjectContext(
-  manifestContent: '''
+      final context = await createProjectContext(
+        manifestContent: '''
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity
@@ -24,7 +23,7 @@ final context = await createProjectContext(
     </application>
 </manifest>
 ''',
-);
+      );
 
       final result = await audit.run(context);
 
@@ -32,9 +31,8 @@ final context = await createProjectContext(
     });
 
     test('detects exported activity', () async {
-
-final context = await createProjectContext(
-  manifestContent: '''
+      final context = await createProjectContext(
+        manifestContent: '''
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity
@@ -43,7 +41,7 @@ final context = await createProjectContext(
     </application>
 </manifest>
 ''',
-);
+      );
 
       final result = await audit.run(context);
 
@@ -52,9 +50,8 @@ final context = await createProjectContext(
     });
 
     test('detects exported service', () async {
-
-final context = await createProjectContext(
-  manifestContent: '''
+      final context = await createProjectContext(
+        manifestContent: '''
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <service
@@ -63,7 +60,7 @@ final context = await createProjectContext(
     </application>
 </manifest>
 ''',
-);
+      );
 
       final result = await audit.run(context);
 
@@ -72,8 +69,8 @@ final context = await createProjectContext(
     });
 
     test('detects exported receiver', () async {
-final context = await createProjectContext(
-  manifestContent: '''
+      final context = await createProjectContext(
+        manifestContent: '''
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <receiver
@@ -82,7 +79,7 @@ final context = await createProjectContext(
     </application>
 </manifest>
 ''',
-);
+      );
 
       final result = await audit.run(context);
 
@@ -91,10 +88,8 @@ final context = await createProjectContext(
     });
 
     test('detects exported provider', () async {
-
-
-final context = await createProjectContext(
-  manifestContent: '''
+      final context = await createProjectContext(
+        manifestContent: '''
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <provider
@@ -103,8 +98,7 @@ final context = await createProjectContext(
     </application>
 </manifest>
 ''',
-);
-
+      );
 
       final result = await audit.run(context);
 
@@ -113,7 +107,7 @@ final context = await createProjectContext(
     });
 
     test('detects multiple exported components', () async {
-      final context = await createProjectContext( 
+      final context = await createProjectContext(
         manifestContent: '''
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
@@ -130,10 +124,8 @@ final context = await createProjectContext(
             android:exported="true" />
     </application>
 </manifest>
-''');
-
-
-
+''',
+      );
 
       final result = await audit.run(context);
 
@@ -141,18 +133,15 @@ final context = await createProjectContext(
     });
 
     test('ignores components without exported attribute', () async {
-
-final context = await createProjectContext(
-  manifestContent: '''
+      final context = await createProjectContext(
+        manifestContent: '''
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity android:name=".MainActivity" />
     </application>
 </manifest>
 ''',
-);
-
-
+      );
 
       final result = await audit.run(context);
 

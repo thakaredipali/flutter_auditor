@@ -39,15 +39,11 @@ await prefs.setString("auth_token", token);
       final result = await audit.run(context);
 
       expect(result.issues.length, 1);
-      expect(
-        result.issues.first.title,
-        'Sensitive Data in SharedPreferences',
-      );
+      expect(result.issues.first.title, 'Sensitive Data in SharedPreferences');
       expect(result.issues.first.severity, Severity.high);
     });
 
-    test('detects sensitive data stored in an unencrypted Hive box',
-        () async {
+    test('detects sensitive data stored in an unencrypted Hive box', () async {
       final context = await createProjectContextWithFiles(
         files: {
           'lib/hive_setup.dart': '''

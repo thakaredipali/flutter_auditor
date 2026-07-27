@@ -86,13 +86,18 @@ class HtmlReporter {
       ..writeln(
         '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
       )
-      ..writeln('<title>Flutter Audit Report — $projectName</title>')
+      ..writeln('<title>Flutter Auditor Report — $projectName</title>')
       ..writeln('<style>${_css()}</style>')
       ..writeln('</head>')
       ..writeln('<body>')
       ..writeln('<div class="page">');
 
-    _writeHeader(buffer, projectName: projectName, context: context, date: date);
+    _writeHeader(
+      buffer,
+      projectName: projectName,
+      context: context,
+      date: date,
+    );
     _writeSummaryAndChart(
       buffer,
       bySeverity: bySeverity,
@@ -188,7 +193,8 @@ class HtmlReporter {
     ];
 
     final total = segments.fold<int>(0, (sum, s) => sum + s.count);
-    final highCount = bySeverity[Severity.critical]!.length +
+    final highCount =
+        bySeverity[Severity.critical]!.length +
         bySeverity[Severity.high]!.length;
     final mediumCount = bySeverity[Severity.medium]!.length;
     final lowCount =
@@ -197,15 +203,15 @@ class HtmlReporter {
     final status = highCount > 0
         ? '⚠️ ACTION REQUIRED'
         : mediumCount > 0
-            ? '⚠️ REVIEW RECOMMENDED'
-            : lowCount > 0
-                ? 'ℹ️ MINOR ISSUES'
-                : '✅ ALL CLEAR';
+        ? '⚠️ REVIEW RECOMMENDED'
+        : lowCount > 0
+        ? 'ℹ️ MINOR ISSUES'
+        : '✅ ALL CLEAR';
     final statusClass = highCount > 0
         ? 'status-bad'
         : (mediumCount > 0 || lowCount > 0)
-            ? 'status-warn'
-            : 'status-good';
+        ? 'status-warn'
+        : 'status-good';
 
     buffer.writeln('<section class="summary">');
 
@@ -258,10 +264,34 @@ class HtmlReporter {
     buffer.writeln('<div class="bar-chart-card">');
     buffer.writeln('<h2>Findings by Category</h2>');
     buffer.writeln('<div class="bars">');
-    _writeBar(buffer, 'High', highCount, maxCount, _severityColors[Severity.high]!);
-    _writeBar(buffer, 'Medium', mediumCount, maxCount, _severityColors[Severity.medium]!);
-    _writeBar(buffer, 'Low', lowCount, maxCount, _severityColors[Severity.low]!);
-    _writeBar(buffer, 'Maintenance', maintenanceCount, maxCount, _maintenanceColor);
+    _writeBar(
+      buffer,
+      'High',
+      highCount,
+      maxCount,
+      _severityColors[Severity.high]!,
+    );
+    _writeBar(
+      buffer,
+      'Medium',
+      mediumCount,
+      maxCount,
+      _severityColors[Severity.medium]!,
+    );
+    _writeBar(
+      buffer,
+      'Low',
+      lowCount,
+      maxCount,
+      _severityColors[Severity.low]!,
+    );
+    _writeBar(
+      buffer,
+      'Maintenance',
+      maintenanceCount,
+      maxCount,
+      _maintenanceColor,
+    );
     _writeBar(buffer, 'Passed', passedCount, maxCount, _passedColor);
     buffer.writeln('</div>');
     buffer.writeln('</div>');
@@ -306,7 +336,9 @@ class HtmlReporter {
     );
     buffer.writeln('<div class="issue-list">');
     for (final issue in issues) {
-      buffer.writeln('<div class="issue-card" style="border-left-color:$color">');
+      buffer.writeln(
+        '<div class="issue-card" style="border-left-color:$color">',
+      );
       buffer.writeln('<h3>${_esc(issue.title)}</h3>');
       buffer.writeln(
         '<div class="issue-location">📍 ${_esc(issue.file)}'
@@ -322,7 +354,10 @@ class HtmlReporter {
     buffer.writeln('</details>');
   }
 
-  void _writePassedSection(StringBuffer buffer, {required List<Audit> passedAudits}) {
+  void _writePassedSection(
+    StringBuffer buffer, {
+    required List<Audit> passedAudits,
+  }) {
     if (passedAudits.isEmpty) return;
 
     buffer.writeln('<details class="issue-section">');

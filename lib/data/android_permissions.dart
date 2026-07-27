@@ -85,7 +85,8 @@ const highRiskPermissions = [
     permission: 'android.permission.PROCESS_OUTGOING_CALLS',
     risk: PermissionRisk.high,
     category: 'Call Log',
-    reason: 'Can intercept and redirect outgoing calls. Deprecated on newer Android.',
+    reason:
+        'Can intercept and redirect outgoing calls. Deprecated on newer Android.',
     recommendation:
         'Migrate to CallRedirectionService (Android 10+). Otherwise requires declaration.',
   ),
@@ -112,7 +113,8 @@ const highRiskPermissions = [
     permission: 'android.permission.ACCESS_BACKGROUND_LOCATION',
     risk: PermissionRisk.high,
     category: 'Location',
-    reason: 'Tracks the user\'s location even when the app is closed or not in use.',
+    reason:
+        'Tracks the user\'s location even when the app is closed or not in use.',
     recommendation:
         'Use foreground-only location (ACCESS_FINE_LOCATION / ACCESS_COARSE_LOCATION) unless a core, '
         'user-beneficial background feature exists. Requires a Play Console declaration + demo video.',
@@ -123,7 +125,8 @@ const highRiskPermissions = [
     permission: 'android.permission.MANAGE_EXTERNAL_STORAGE',
     risk: PermissionRisk.high,
     category: 'Storage',
-    reason: 'Grants broad, unrestricted access to shared storage ("All files access").',
+    reason:
+        'Grants broad, unrestricted access to shared storage ("All files access").',
     recommendation:
         'Use the Storage Access Framework or MediaStore API instead. '
         'Only keep for genuine file-manager/backup apps — requires declaration.',
@@ -168,8 +171,10 @@ const highRiskPermissions = [
     permission: 'android.permission.BIND_DEVICE_ADMIN',
     risk: PermissionRisk.high,
     category: 'Device Admin',
-    reason: 'Grants device admin control — device wipe, lock, and policy enforcement.',
-    recommendation: 'Remove unless building an enterprise MDM/device-management app.',
+    reason:
+        'Grants device admin control — device wipe, lock, and policy enforcement.',
+    recommendation:
+        'Remove unless building an enterprise MDM/device-management app.',
   ),
 
   // ---------------- Notifications ----------------
@@ -199,7 +204,8 @@ const highRiskPermissions = [
     permission: 'android.permission.BODY_SENSORS',
     risk: PermissionRisk.high,
     category: 'Health',
-    reason: 'Accesses body sensor data such as heart rate, SpO2, and skin temperature.',
+    reason:
+        'Accesses body sensor data such as heart rate, SpO2, and skin temperature.',
     recommendation:
         'On Android 16+, migrate to granular permissions (e.g., android.permission.health.READ_HEART_RATE). '
         'Declaration required regardless of which variant is used.',
@@ -219,7 +225,8 @@ const highRiskPermissions = [
     permission: 'android.permission.BIND_VPN_SERVICE',
     risk: PermissionRisk.high,
     category: 'Network',
-    reason: 'Creates a device-level VPN tunnel with visibility into all network traffic.',
+    reason:
+        'Creates a device-level VPN tunnel with visibility into all network traffic.',
     recommendation:
         'Only keep for genuine VPN, parental-control, or device-security apps. '
         'Must encrypt device-to-tunnel traffic and be declared in the Play listing.',
@@ -255,7 +262,8 @@ const mediumRiskPermissions = [
     risk: PermissionRisk.medium,
     category: 'Location',
     reason: 'Accesses the user\'s approximate location.',
-    recommendation: 'Request location only when necessary and provide clear in-app justification.',
+    recommendation:
+        'Request location only when necessary and provide clear in-app justification.',
   ),
   PermissionInfo(
     permission: 'android.permission.READ_MEDIA_IMAGES',
@@ -295,7 +303,8 @@ const mediumRiskPermissions = [
     risk: PermissionRisk.medium,
     category: 'Contacts',
     reason: 'Modifies the user\'s contact list.',
-    recommendation: 'Only request if the app explicitly creates/edits contacts as a core feature.',
+    recommendation:
+        'Only request if the app explicitly creates/edits contacts as a core feature.',
   ),
   PermissionInfo(
     permission: 'android.permission.CAMERA',
@@ -317,7 +326,8 @@ const mediumRiskPermissions = [
     permission: 'android.permission.READ_PHONE_STATE',
     risk: PermissionRisk.medium,
     category: 'Telephony',
-    reason: 'Reads device identifiers and phone state (IMEI, call state, etc.).',
+    reason:
+        'Reads device identifiers and phone state (IMEI, call state, etc.).',
     recommendation:
         'Use Firebase Instance ID / Advertising ID / SDK-generated UUIDs instead of device identifiers where possible.',
   ),
@@ -326,13 +336,15 @@ const mediumRiskPermissions = [
     risk: PermissionRisk.medium,
     category: 'Telephony',
     reason: 'Reads the device\'s phone number(s).',
-    recommendation: 'Use SMS Retriever / phone number hint APIs for verification flows instead.',
+    recommendation:
+        'Use SMS Retriever / phone number hint APIs for verification flows instead.',
   ),
   PermissionInfo(
     permission: 'android.permission.USE_EXACT_ALARM',
     risk: PermissionRisk.medium,
     category: 'Alarms',
-    reason: 'Schedules precisely-timed alarms; auto-granted only for alarm/calendar apps.',
+    reason:
+        'Schedules precisely-timed alarms; auto-granted only for alarm/calendar apps.',
     recommendation:
         'Use SCHEDULE_EXACT_ALARM (user-granted) instead unless the app\'s core function is an alarm, timer, or calendar with event notifications.',
   ),
@@ -340,7 +352,8 @@ const mediumRiskPermissions = [
     permission: 'android.permission.USE_FULL_SCREEN_INTENT',
     risk: PermissionRisk.medium,
     category: 'Notifications',
-    reason: 'Shows a full-screen notification, interrupting whatever the user is doing.',
+    reason:
+        'Shows a full-screen notification, interrupting whatever the user is doing.',
     recommendation:
         'Auto-granted only for alarm apps or calling apps on Android 14+. Otherwise, request explicit user consent.',
   ),
@@ -364,21 +377,25 @@ const mediumRiskPermissions = [
     permission: 'android.permission.ACTIVITY_RECOGNITION',
     risk: PermissionRisk.medium,
     category: 'Sensors',
-    reason: 'Detects the user\'s physical activity (walking, running, driving, etc.).',
-    recommendation: 'Request only if activity-based features are core to the app (e.g., fitness tracking).',
+    reason:
+        'Detects the user\'s physical activity (walking, running, driving, etc.).',
+    recommendation:
+        'Request only if activity-based features are core to the app (e.g., fitness tracking).',
   ),
   PermissionInfo(
     permission: 'android.permission.BLUETOOTH_CONNECT',
     risk: PermissionRisk.medium,
     category: 'Bluetooth',
     reason: 'Connects to already-paired Bluetooth devices.',
-    recommendation: 'Request only when a Bluetooth-dependent feature is actively used.',
+    recommendation:
+        'Request only when a Bluetooth-dependent feature is actively used.',
   ),
   PermissionInfo(
     permission: 'android.permission.BLUETOOTH_SCAN',
     risk: PermissionRisk.medium,
     category: 'Bluetooth',
-    reason: 'Scans for nearby Bluetooth devices (can be used to infer location).',
+    reason:
+        'Scans for nearby Bluetooth devices (can be used to infer location).',
     recommendation:
         'Add android:usesPermissionFlags="neverForLocation" if location derivation is not needed, to avoid also requiring location permissions.',
   ),
@@ -387,7 +404,8 @@ const mediumRiskPermissions = [
     risk: PermissionRisk.medium,
     category: 'WiFi',
     reason: 'Discovers and connects to nearby WiFi devices.',
-    recommendation: 'Request only when a WiFi-based discovery/connection feature is active.',
+    recommendation:
+        'Request only when a WiFi-based discovery/connection feature is active.',
   ),
 ];
 
@@ -402,14 +420,16 @@ const lowRiskPermissions = [
     risk: PermissionRisk.low,
     category: 'Network',
     reason: 'Allows the app to access the internet.',
-    recommendation: 'Ensure all network requests are made securely (e.g., using HTTPS).',
+    recommendation:
+        'Ensure all network requests are made securely (e.g., using HTTPS).',
   ),
   PermissionInfo(
     permission: 'android.permission.ACCESS_NETWORK_STATE',
     risk: PermissionRisk.low,
     category: 'Network',
     reason: 'Allows the app to check network connectivity status.',
-    recommendation: 'Use only if you need to check network state before making requests.',
+    recommendation:
+        'Use only if you need to check network state before making requests.',
   ),
   PermissionInfo(
     permission: 'android.permission.ACCESS_WIFI_STATE',
@@ -423,7 +443,8 @@ const lowRiskPermissions = [
     risk: PermissionRisk.low,
     category: 'Network',
     reason: 'Allows the app to change WiFi connectivity state.',
-    recommendation: 'Remove if the app does not actively manage WiFi connections.',
+    recommendation:
+        'Remove if the app does not actively manage WiFi connections.',
   ),
   PermissionInfo(
     permission: 'android.permission.VIBRATE',
@@ -437,20 +458,24 @@ const lowRiskPermissions = [
     risk: PermissionRisk.low,
     category: 'Device',
     reason: 'Prevents the device from sleeping.',
-    recommendation: 'Ensure wake locks are released promptly to avoid battery drain complaints.',
+    recommendation:
+        'Ensure wake locks are released promptly to avoid battery drain complaints.',
   ),
   PermissionInfo(
     permission: 'android.permission.POST_NOTIFICATIONS',
     risk: PermissionRisk.low,
     category: 'Notifications',
-    reason: 'Allows the app to post notifications (required at runtime on Android 13+).',
-    recommendation: 'Request at a contextually relevant moment, not immediately on app launch.',
+    reason:
+        'Allows the app to post notifications (required at runtime on Android 13+).',
+    recommendation:
+        'Request at a contextually relevant moment, not immediately on app launch.',
   ),
   PermissionInfo(
     permission: 'android.permission.SCHEDULE_EXACT_ALARM',
     risk: PermissionRisk.low,
     category: 'Alarms',
-    reason: 'Schedules exact alarms; user-grantable, safer alternative to USE_EXACT_ALARM.',
+    reason:
+        'Schedules exact alarms; user-grantable, safer alternative to USE_EXACT_ALARM.',
     recommendation: 'Preferred over USE_EXACT_ALARM for non-alarm-core apps.',
   ),
   PermissionInfo(
@@ -458,21 +483,24 @@ const lowRiskPermissions = [
     risk: PermissionRisk.low,
     category: 'Services',
     reason: 'Allows the app to run a foreground service.',
-    recommendation: 'Ensure a persistent, user-visible notification accompanies the service per policy.',
+    recommendation:
+        'Ensure a persistent, user-visible notification accompanies the service per policy.',
   ),
   PermissionInfo(
     permission: 'android.permission.FOREGROUND_SERVICE_LOCATION',
     risk: PermissionRisk.low,
     category: 'Services',
     reason: 'Declares the type of foreground service as location-related.',
-    recommendation: 'Must match an actual location-based foreground service use case.',
+    recommendation:
+        'Must match an actual location-based foreground service use case.',
   ),
   PermissionInfo(
     permission: 'android.permission.RECEIVE_BOOT_COMPLETED',
     risk: PermissionRisk.low,
     category: 'Device',
     reason: 'Allows the app to start automatically after device boot.',
-    recommendation: 'Confirm this is needed — unnecessary auto-start impacts battery/startup time.',
+    recommendation:
+        'Confirm this is needed — unnecessary auto-start impacts battery/startup time.',
   ),
 ];
 

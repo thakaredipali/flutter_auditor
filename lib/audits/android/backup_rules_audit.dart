@@ -9,8 +9,7 @@ import 'package:flutter_auditor/utils/android_manifest_helper.dart';
 import 'package:xml/xml.dart';
 
 class BackupRulesAudit extends Audit {
-  static const _androidNamespace =
-      'http://schemas.android.com/apk/res/android';
+  static const _androidNamespace = 'http://schemas.android.com/apk/res/android';
 
   @override
   String get id => 'backup_rules';

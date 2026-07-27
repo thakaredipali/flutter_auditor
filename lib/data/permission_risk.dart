@@ -1,5 +1,1 @@
-enum PermissionRisk {
-  high,
-  medium,
-  low,
-}
+enum PermissionRisk { high, medium, low }

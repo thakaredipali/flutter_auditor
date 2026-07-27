@@ -4,7 +4,6 @@ import 'package:test/test.dart';
 
 import '../../helpers/test_helper.dart';
 
-
 void main() {
   group('ManifestPermissionAudit', () {
     late ManifestPermissionAudit audit;
@@ -121,15 +120,9 @@ void main() {
 
       expect(result.issues, hasLength(2));
 
-      expect(
-        result.issues.any((e) => e.severity == Severity.high),
-        isTrue,
-      );
+      expect(result.issues.any((e) => e.severity == Severity.high), isTrue);
 
-      expect(
-        result.issues.any((e) => e.severity == Severity.medium),
-        isTrue,
-      );
+      expect(result.issues.any((e) => e.severity == Severity.medium), isTrue);
     });
 
     test('handles duplicate permissions', () async {

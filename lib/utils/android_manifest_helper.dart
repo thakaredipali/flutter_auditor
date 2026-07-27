@@ -14,6 +14,10 @@ class AndroidManifestHelper {
 
     final content = await manifest.readAsString();
 
-    return XmlDocument.parse(content);
+    try {
+      return XmlDocument.parse(content);
+    } catch (_) {
+      return null;
+    }
   }
 }

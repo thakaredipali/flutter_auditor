@@ -67,11 +67,11 @@ void main() {
     });
 
     test(
-        'mentions LSSupportsOpeningDocumentsInPlace when also enabled',
-        () async {
-      final context = await createProjectContextWithFiles(
-        files: {
-          'ios/Runner/Info.plist': '''
+      'mentions LSSupportsOpeningDocumentsInPlace when also enabled',
+      () async {
+        final context = await createProjectContextWithFiles(
+          files: {
+            'ios/Runner/Info.plist': '''
 <?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0">
 <dict>
@@ -82,16 +82,17 @@ void main() {
 </dict>
 </plist>
 ''',
-        },
-      );
+          },
+        );
 
-      final result = await audit.run(context);
+        final result = await audit.run(context);
 
-      expect(result.issues.length, 1);
-      expect(
-        result.issues.first.description,
-        contains('LSSupportsOpeningDocumentsInPlace'),
-      );
-    });
+        expect(result.issues.length, 1);
+        expect(
+          result.issues.first.description,
+          contains('LSSupportsOpeningDocumentsInPlace'),
+        );
+      },
+    );
   });
 }
