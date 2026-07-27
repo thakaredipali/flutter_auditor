@@ -1,6 +1,6 @@
-import 'package:flutter_audit/data/android_permissions.dart';
-import 'package:flutter_audit/data/permission_info.dart';
-import 'package:flutter_audit/data/permission_risk.dart';
+import 'package:flutter_auditor/data/android_permissions.dart';
+import 'package:flutter_auditor/data/permission_info.dart';
+import 'package:flutter_auditor/data/permission_risk.dart';
 import 'package:xml/xml.dart';
 import '../../models/audit.dart';
 import '../../models/audit_result.dart';

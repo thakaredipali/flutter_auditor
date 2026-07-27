@@ -1,18 +1,18 @@
-import 'package:flutter_audit/audits/android/allow_backup_audit.dart';
-import 'package:flutter_audit/audits/android/backup_rules_audit.dart';
-import 'package:flutter_audit/audits/android/cleartext_traffic_audit.dart';
-import 'package:flutter_audit/audits/android/debuggable_audit.dart';
-import 'package:flutter_audit/audits/android/exported_components_audit.dart';
-import 'package:flutter_audit/audits/android/manifest_permission_audit.dart';
-import 'package:flutter_audit/audits/android/network_security_config_audit.dart';
-import 'package:flutter_audit/audits/dependencies/dependency_hygiene_audit.dart';
-import 'package:flutter_audit/audits/dependencies/unused_dependency_audit.dart';
-import 'package:flutter_audit/audits/ios/app_transport_security_audit.dart';
-import 'package:flutter_audit/audits/ios/file_sharing_audit.dart';
-import 'package:flutter_audit/audits/ios/usage_description_audit.dart';
-import 'package:flutter_audit/audits/network/insecure_network_audit.dart';
-import 'package:flutter_audit/audits/secrets/hardcoded_secrets_audit.dart';
-import 'package:flutter_audit/audits/storage/insecure_storage_audit.dart';
+import 'package:flutter_auditor/audits/android/allow_backup_audit.dart';
+import 'package:flutter_auditor/audits/android/backup_rules_audit.dart';
+import 'package:flutter_auditor/audits/android/cleartext_traffic_audit.dart';
+import 'package:flutter_auditor/audits/android/debuggable_audit.dart';
+import 'package:flutter_auditor/audits/android/exported_components_audit.dart';
+import 'package:flutter_auditor/audits/android/manifest_permission_audit.dart';
+import 'package:flutter_auditor/audits/android/network_security_config_audit.dart';
+import 'package:flutter_auditor/audits/dependencies/dependency_hygiene_audit.dart';
+import 'package:flutter_auditor/audits/dependencies/unused_dependency_audit.dart';
+import 'package:flutter_auditor/audits/ios/app_transport_security_audit.dart';
+import 'package:flutter_auditor/audits/ios/file_sharing_audit.dart';
+import 'package:flutter_auditor/audits/ios/usage_description_audit.dart';
+import 'package:flutter_auditor/audits/network/insecure_network_audit.dart';
+import 'package:flutter_auditor/audits/secrets/hardcoded_secrets_audit.dart';
+import 'package:flutter_auditor/audits/storage/insecure_storage_audit.dart';
 
 import '../models/audit.dart';
 

@@ -1,10 +1,14 @@
-name: flutter_audit
+name: flutter_auditor
 description: A sample command-line application.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/thakaredipali/flutter_auditor
+issue_tracker: https://github.com/thakaredipali/flutter_auditor/issues
 
 environment:
   sdk: ^3.9.2
+
+executables:
+  flutter_auditor:
 
 # Add regular dependencies here.
 dependencies:

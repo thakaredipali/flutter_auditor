@@ -1,6 +1,6 @@
-import 'package:flutter_audit/audits/dependencies/dependency_hygiene_audit.dart';
-import 'package:flutter_audit/models/severity.dart';
-import 'package:flutter_audit/utils/pub_dev_client.dart';
+import 'package:flutter_auditor/audits/dependencies/dependency_hygiene_audit.dart';
+import 'package:flutter_auditor/models/severity.dart';
+import 'package:flutter_auditor/utils/pub_dev_client.dart';
 import 'package:test/test.dart';
 
 import '../../helpers/test_helper.dart';

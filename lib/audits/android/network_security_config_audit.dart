@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter_audit/models/audit.dart';
-import 'package:flutter_audit/models/audit_result.dart';
-import 'package:flutter_audit/models/project_context.dart';
-import 'package:flutter_audit/models/security_issue.dart';
-import 'package:flutter_audit/models/severity.dart';
-import 'package:flutter_audit/utils/android_manifest_helper.dart';
+import 'package:flutter_auditor/models/audit.dart';
+import 'package:flutter_auditor/models/audit_result.dart';
+import 'package:flutter_auditor/models/project_context.dart';
+import 'package:flutter_auditor/models/security_issue.dart';
+import 'package:flutter_auditor/models/severity.dart';
+import 'package:flutter_auditor/utils/android_manifest_helper.dart';
 import 'package:xml/xml.dart';
 
 class NetworkSecurityConfigAudit extends Audit {

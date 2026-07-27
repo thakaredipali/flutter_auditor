@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter_audit/models/project_context.dart';
+import 'package:flutter_auditor/models/project_context.dart';
 
 Future<ProjectContext> createProjectContext({
   required String manifestContent,
 }) async {
-  final tempDir = await Directory.systemTemp.createTemp('flutter_audit_test');
+  final tempDir = await Directory.systemTemp.createTemp('flutter_auditor_test');
 
   final manifestFile = File(
     '${tempDir.path}/android/app/src/main/AndroidManifest.xml',
@@ -26,7 +26,7 @@ Future<ProjectContext> createProjectContext({
 Future<ProjectContext> createProjectContextWithFiles({
   required Map<String, String> files,
 }) async {
-  final tempDir = await Directory.systemTemp.createTemp('flutter_audit_test');
+  final tempDir = await Directory.systemTemp.createTemp('flutter_auditor_test');
 
   for (final entry in files.entries) {
     final file = File('${tempDir.path}/${entry.key}');

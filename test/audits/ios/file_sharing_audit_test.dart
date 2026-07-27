@@ -1,5 +1,5 @@
-import 'package:flutter_audit/audits/ios/file_sharing_audit.dart';
-import 'package:flutter_audit/models/severity.dart';
+import 'package:flutter_auditor/audits/ios/file_sharing_audit.dart';
+import 'package:flutter_auditor/models/severity.dart';
 import 'package:test/test.dart';
 
 import '../../helpers/test_helper.dart';

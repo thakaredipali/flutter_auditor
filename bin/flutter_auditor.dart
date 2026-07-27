@@ -1,7 +1,7 @@
-import 'package:flutter_audit/cli/command_runner.dart';
+import 'package:flutter_auditor/cli/command_runner.dart';
 
 Future<void> main(List<String> arguments) async {
-  final runner = FlutterAuditCommandRunner();
+  final runner = FlutterAuditorCommandRunner();
 
   try {
     await runner.run(arguments);

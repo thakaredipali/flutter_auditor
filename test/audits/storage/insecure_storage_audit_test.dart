@@ -1,5 +1,5 @@
-import 'package:flutter_audit/audits/storage/insecure_storage_audit.dart';
-import 'package:flutter_audit/models/severity.dart';
+import 'package:flutter_auditor/audits/storage/insecure_storage_audit.dart';
+import 'package:flutter_auditor/models/severity.dart';
 import 'package:test/test.dart';
 
 import '../../helpers/test_helper.dart';

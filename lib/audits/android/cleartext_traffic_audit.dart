@@ -1,4 +1,4 @@
-import 'package:flutter_audit/utils/android_manifest_helper.dart';
+import 'package:flutter_auditor/utils/android_manifest_helper.dart';
 
 import '../../models/audit.dart';
 import '../../models/audit_result.dart';

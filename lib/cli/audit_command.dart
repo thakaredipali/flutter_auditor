@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:flutter_audit/audits/audit_registry.dart';
-import 'package:flutter_audit/engine/audit_engine.dart';
-import 'package:flutter_audit/models/severity.dart';
-import 'package:flutter_audit/reporter/console_reporter.dart';
-import 'package:flutter_audit/reporter/html_reporter.dart';
-import 'package:flutter_audit/scanner/project_scanner.dart';
+import 'package:flutter_auditor/audits/audit_registry.dart';
+import 'package:flutter_auditor/engine/audit_engine.dart';
+import 'package:flutter_auditor/models/severity.dart';
+import 'package:flutter_auditor/reporter/console_reporter.dart';
+import 'package:flutter_auditor/reporter/html_reporter.dart';
+import 'package:flutter_auditor/scanner/project_scanner.dart';
 
 /// Executes a Flutter security audit.
 class AuditCommand extends Command<int> {
