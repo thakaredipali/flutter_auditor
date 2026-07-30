@@ -5,4 +5,6 @@
 const Set<String> maintenanceAuditIds = {
   'dependency_hygiene',
   'unused_dependency',
+  'unused_asset',
+  'overlarge_asset',
 };

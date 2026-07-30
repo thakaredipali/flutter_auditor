@@ -1,18 +1,18 @@
 # flutter_auditor
 
-A command-line security & dependency audit tool for Flutter projects. Point
-it at a Flutter project and it scans the Android manifest, iOS `Info.plist`,
-Dart source, and `pubspec.yaml`/`pubspec.lock` for common security
-misconfigurations and dependency hygiene issues — no project modification,
-read-only analysis.
+A command-line project-health audit tool for Flutter projects. Point it at
+a Flutter project and it scans the Android manifest, iOS `Info.plist`,
+Dart source, and `pubspec.yaml`/`pubspec.lock` — covering security
+misconfigurations, dependency hygiene, and project hygiene (unused assets,
+unused dependencies) in one pass, one command, no project modification.
 
 ## Why flutter_auditor?
 
-Most Flutter static-analysis tools focus on code quality, lints, or
-performance. `flutter_auditor` is scoped narrowly to **security and
-dependency hygiene** — the kind of misconfiguration that quietly ships to
-production because nothing in the normal `flutter analyze` workflow looks
-for it.
+`flutter_auditor` audits the parts of a Flutter project most single-purpose
+tools don't look at together: platform configuration files
+(`AndroidManifest.xml`, Network Security Config, `Info.plist`), Dart
+source, and `pubspec.yaml`/`pubspec.lock` — in one pass, instead of
+stitching together several tools each covering one slice.
 
 - **Platform-config aware, not just source-aware** — most Dart analyzers
   only look at `.dart` files. `flutter_auditor` also parses
@@ -27,10 +27,14 @@ for it.
 - **Actionable, not just diagnostic** — every finding ships with a
   severity, the exact file (and line, where applicable), a plain-language
   description, and a concrete fix — not just a rule ID to go look up.
-- **Security + dependency hygiene in one pass** — one command reports both
-  security misconfigurations and dependency maintenance issues (outdated,
-  discontinued, restricted-license, unused), instead of needing separate
-  tools for each.
+- **Multiple categories in one pass** — security misconfigurations,
+  dependency hygiene (outdated, discontinued, restricted-license, unused),
+  and project hygiene (unused assets) today, with more categories planned,
+  instead of needing a separate tool per concern.
+- **Suppressible without going silent** — a `.flutter_auditor_ignore.yaml`
+  file lets you accept known findings by audit, id, or file glob; the
+  console always reports how many findings were suppressed, so nothing
+  disappears quietly.
 - **CI-friendly by default** — a single exit code (`--fail-on`) gates your
   pipeline; a shareable HTML report (`--html`) with charts is there when
   you want something to hand to a non-technical stakeholder.
@@ -118,6 +122,10 @@ how many were suppressed (`ⓘ N finding(s) suppressed by
 - Outdated, discontinued, or unlicensed/restricted-license packages
 - An outdated Dart SDK constraint (pre-null-safety)
 - Dependencies declared in `pubspec.yaml` but never imported
+
+**Assets**
+- Assets declared in `pubspec.yaml` but never referenced in Dart source
+- Assets large enough to meaningfully bloat the app bundle (≥1 MB medium, ≥5 MB high)
 
 ## Example output
 
