@@ -1,6 +1,6 @@
 name: flutter_auditor
-description: A CLI that audits Flutter projects for security misconfigurations (Android manifest, iOS Info.plist, hardcoded secrets, insecure network/storage) and dependency hygiene issues.
-version: 1.0.0
+description: A CLI that audits Flutter projects for security misconfigurations, dependency hygiene, and asset hygiene (Android manifest, iOS Info.plist, hardcoded secrets, unused/overlarge assets).
+version: 1.1.0
 repository: https://github.com/thakaredipali/flutter_auditor
 issue_tracker: https://github.com/thakaredipali/flutter_auditor/issues
 
