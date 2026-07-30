@@ -26,6 +26,22 @@ class ProjectContext {
   File get androidManifest =>
       File('$rootPath/android/app/src/main/AndroidManifest.xml');
 
+  /// android/app/build.gradle (Groovy DSL)
+  File get androidAppBuildGradle => File('$rootPath/android/app/build.gradle');
+
+  /// android/app/build.gradle.kts (Kotlin DSL)
+  File get androidAppBuildGradleKts =>
+      File('$rootPath/android/app/build.gradle.kts');
+
+  /// android/key.properties
+  File get androidKeyProperties => File('$rootPath/android/key.properties');
+
+  /// .gitignore at the project root
+  File get gitignore => File('$rootPath/.gitignore');
+
+  /// Project-level suppression config for flutter_auditor findings.
+  File get ignoreConfigFile => File('$rootPath/.flutter_auditor_ignore.yaml');
+
   /// ios directory
   Directory get iosDirectory => Directory('$rootPath/ios');
 

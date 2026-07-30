@@ -7,6 +7,7 @@ import 'package:flutter_auditor/models/severity.dart';
 import 'package:flutter_auditor/reporter/console_reporter.dart';
 import 'package:flutter_auditor/reporter/html_reporter.dart';
 import 'package:flutter_auditor/scanner/project_scanner.dart';
+import 'package:flutter_auditor/utils/ignore_config_helper.dart';
 
 /// Executes a Flutter security audit.
 class AuditCommand extends Command<int> {
@@ -52,7 +53,17 @@ class AuditCommand extends Command<int> {
 
     final registry = const AuditRegistry();
     final engine = AuditEngine(audits: registry.getAudits());
-    final results = await engine.run(context);
+    final rawResults = await engine.run(context);
+
+    final ignoreConfig = await IgnoreConfigHelper.load(context);
+    final (results, suppressedCount) = ignoreConfig.apply(rawResults, context);
+
+    if (suppressedCount > 0) {
+      print(
+        'ⓘ $suppressedCount finding(s) suppressed by .flutter_auditor_ignore.yaml',
+      );
+      print('');
+    }
 
     final reporter = const ConsoleReporter();
 

@@ -5,6 +5,7 @@ import 'package:flutter_auditor/audits/android/debuggable_audit.dart';
 import 'package:flutter_auditor/audits/android/exported_components_audit.dart';
 import 'package:flutter_auditor/audits/android/manifest_permission_audit.dart';
 import 'package:flutter_auditor/audits/android/network_security_config_audit.dart';
+import 'package:flutter_auditor/audits/android/release_signing_audit.dart';
 import 'package:flutter_auditor/audits/dependencies/dependency_hygiene_audit.dart';
 import 'package:flutter_auditor/audits/dependencies/unused_dependency_audit.dart';
 import 'package:flutter_auditor/audits/ios/app_transport_security_audit.dart';
@@ -29,6 +30,7 @@ class AuditRegistry {
       ManifestPermissionAudit(),
       NetworkSecurityConfigAudit(),
       BackupRulesAudit(),
+      ReleaseSigningAudit(),
       HardcodedSecretsAudit(),
       InsecureNetworkAudit(),
       InsecureStorageAudit(),
