@@ -1,4 +1,4 @@
-## Unreleased
+## 1.2.0
 
 - New: `--update-baseline` snapshots current findings into
   `.flutter_auditor_baseline.json`, fingerprinted by audit/file/description
