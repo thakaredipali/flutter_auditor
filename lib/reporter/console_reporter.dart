@@ -19,11 +19,16 @@ class ConsoleReporter {
   /// Prints the full report and returns the process exit code: 0 if no
   /// issue meets [failOn], 1 otherwise. Maintenance findings never affect
   /// the exit code. Pass `failOn: null` to always exit 0.
+  ///
+  /// [exemptFromFailOn] holds ids of issues (typically critical/high
+  /// findings kept visible by a baseline) that should still be shown but
+  /// must not, on their own, trigger a non-zero exit code.
   int printReport(
     List<AuditRunResult> results, {
     required ProjectContext context,
     bool verbose = false,
     Severity? failOn = Severity.high,
+    Set<String> exemptFromFailOn = const {},
   }) {
     final securityIssues = <SecurityIssue>[];
     final maintenanceIssues = <SecurityIssue>[];
@@ -66,11 +71,24 @@ class ConsoleReporter {
       lowRisk,
       maintenanceIssues,
       passedAudits,
+      exemptFromFailOn,
     );
 
     var itemNumber = 1;
-    itemNumber = _printRiskSection('HIGH RISK', '✗', highRisk, itemNumber);
-    itemNumber = _printRiskSection('MEDIUM RISK', '⚠', mediumRisk, itemNumber);
+    itemNumber = _printRiskSection(
+      'HIGH RISK',
+      '✗',
+      highRisk,
+      itemNumber,
+      exemptFromFailOn: exemptFromFailOn,
+    );
+    itemNumber = _printRiskSection(
+      'MEDIUM RISK',
+      '⚠',
+      mediumRisk,
+      itemNumber,
+      exemptFromFailOn: exemptFromFailOn,
+    );
 
     _printLowRiskSection(lowRisk, verbose: verbose);
     _printMaintenanceSection(maintenanceIssues, verbose: verbose);
@@ -79,7 +97,9 @@ class ConsoleReporter {
     final hasFailingIssue =
         failOn != null &&
         securityIssues.any(
-          (issue) => issue.severity.isAtLeastAsSevereAs(failOn),
+          (issue) =>
+              issue.severity.isAtLeastAsSevereAs(failOn) &&
+              !exemptFromFailOn.contains(issue.id),
         );
     final exitCode = hasFailingIssue ? 1 : 0;
 
@@ -129,11 +149,20 @@ class ConsoleReporter {
     List<SecurityIssue> lowRisk,
     List<SecurityIssue> maintenanceIssues,
     List<Audit> passedAudits,
+    Set<String> exemptFromFailOn,
   ) {
+    final highRiskBaselinedCount = highRisk
+        .where((issue) => exemptFromFailOn.contains(issue.id))
+        .length;
+    final highRiskBreakdown = highRiskBaselinedCount > 0
+        ? '   (${highRisk.length - highRiskBaselinedCount} new, '
+              '$highRiskBaselinedCount pre-existing)'
+        : '';
+
     print(_divider);
     print(' SUMMARY');
     print(_divider);
-    print('  ✗  High Risk        : ${highRisk.length}');
+    print('  ✗  High Risk        : ${highRisk.length}$highRiskBreakdown');
     print('  ⚠  Medium Risk       : ${mediumRisk.length}');
     print('  ⚠  Low Risk          : ${lowRisk.length}');
     print(
@@ -166,11 +195,19 @@ class ConsoleReporter {
     String title,
     String marker,
     List<SecurityIssue> issues,
-    int startingNumber,
-  ) {
+    int startingNumber, {
+    Set<String> exemptFromFailOn = const {},
+  }) {
     if (issues.isEmpty) {
       return startingNumber;
     }
+
+    final newIssues = issues
+        .where((issue) => !exemptFromFailOn.contains(issue.id))
+        .toList();
+    final baselinedIssues = issues
+        .where((issue) => exemptFromFailOn.contains(issue.id))
+        .toList();
 
     var itemNumber = startingNumber;
 
@@ -179,18 +216,32 @@ class ConsoleReporter {
     print(_divider);
     print('');
 
-    for (final issue in issues) {
-      print('[$itemNumber] ${issue.title}');
+    for (final issue in newIssues) {
+      itemNumber = _printIssueItem(issue, itemNumber);
+    }
+
+    if (baselinedIssues.isNotEmpty) {
       print(
-        '    📍 ${issue.file}${issue.line != null ? ':${issue.line}' : ''}',
+        '  ── Pre-existing (baselined, non-blocking) — '
+        '${baselinedIssues.length} ──',
       );
-      print('    ⚠️  ${issue.description}');
-      print('    ✅ Fix: ${issue.recommendation}');
       print('');
-      itemNumber++;
+
+      for (final issue in baselinedIssues) {
+        itemNumber = _printIssueItem(issue, itemNumber);
+      }
     }
 
     return itemNumber;
+  }
+
+  int _printIssueItem(SecurityIssue issue, int itemNumber) {
+    print('[$itemNumber] ${issue.title}');
+    print('    📍 ${issue.file}${issue.line != null ? ':${issue.line}' : ''}');
+    print('    ⚠️  ${issue.description}');
+    print('    ✅ Fix: ${issue.recommendation}');
+    print('');
+    return itemNumber + 1;
   }
 
   void _printLowRiskSection(

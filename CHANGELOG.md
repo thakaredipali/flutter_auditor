@@ -1,3 +1,21 @@
+## Unreleased
+
+- New: `--update-baseline` snapshots current findings into
+  `.flutter_auditor_baseline.json`, fingerprinted by audit/file/description
+  (not line number, so unrelated edits don't expire baselined findings).
+  Subsequent runs never fail on baselined findings a second time —
+  critical/high findings stay visible in the report so they're never
+  silently forgotten (new findings print first, pre-existing ones follow
+  under a "Pre-existing (baselined, non-blocking)" divider, and the
+  summary breaks down new vs. pre-existing counts), while medium/low/info
+  findings are fully hidden — except maintenance findings (outdated/unused
+  dependencies, unused/overlarge assets), which always stay visible since
+  they never affect the exit code to begin with. The console always
+  reports how many were accepted.
+- New: `--json <path>` writes a JSON report for scripting/CI dashboards.
+- New: `--sarif <path>` writes a SARIF 2.1.0 report, for tools like GitHub
+  code scanning that turn SARIF results into PR-line annotations.
+
 ## 1.1.0
 
 - New audit: Release Signing Audit — flags a release build signed with the

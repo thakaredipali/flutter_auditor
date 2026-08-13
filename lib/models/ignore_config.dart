@@ -1,5 +1,6 @@
 import 'package:path/path.dart' as p;
 
+import '../utils/path_utils.dart';
 import 'audit_result.dart';
 import 'audit_run_result.dart';
 import 'project_context.dart';
@@ -71,7 +72,7 @@ class IgnoreConfig {
       return true;
     }
 
-    final relativeFile = p.relative(issue.file, from: context.rootPath);
+    final relativeFile = PathUtils.relativeToRoot(issue.file, context.rootPath);
 
     return filePatterns.any((pattern) => _matchesGlob(relativeFile, pattern));
   }

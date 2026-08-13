@@ -42,6 +42,9 @@ class ProjectContext {
   /// Project-level suppression config for flutter_auditor findings.
   File get ignoreConfigFile => File('$rootPath/.flutter_auditor_ignore.yaml');
 
+  /// Accepted-baseline snapshot of pre-existing flutter_auditor findings.
+  File get baselineFile => File('$rootPath/.flutter_auditor_baseline.json');
+
   /// ios directory
   Directory get iosDirectory => Directory('$rootPath/ios');
 

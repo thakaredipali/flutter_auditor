@@ -1,9 +1,8 @@
 import 'dart:io';
 
-import 'package:path/path.dart' as p;
-
 import '../data/resolved_asset.dart';
 import '../models/project_context.dart';
+import 'path_utils.dart';
 import 'pubspec_helper.dart';
 
 /// Resolves pubspec.yaml's `flutter.assets` entries (individual files and
@@ -54,12 +53,7 @@ class AssetResolver {
     Set<String> seen,
     List<ResolvedAsset> resolved,
   ) {
-    // Asset paths are always referenced with forward slashes in Dart
-    // source regardless of host OS, so normalize p.relative's
-    // platform-separator output before using it as a match key.
-    final relativePath = p
-        .relative(file.path, from: context.rootPath)
-        .replaceAll(r'\', '/');
+    final relativePath = PathUtils.relativeToRoot(file.path, context.rootPath);
 
     if (seen.add(relativePath)) {
       resolved.add(ResolvedAsset(file: file, relativePath: relativePath));

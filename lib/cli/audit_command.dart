@@ -6,7 +6,10 @@ import 'package:flutter_auditor/engine/audit_engine.dart';
 import 'package:flutter_auditor/models/severity.dart';
 import 'package:flutter_auditor/reporter/console_reporter.dart';
 import 'package:flutter_auditor/reporter/html_reporter.dart';
+import 'package:flutter_auditor/reporter/json_reporter.dart';
+import 'package:flutter_auditor/reporter/sarif_reporter.dart';
 import 'package:flutter_auditor/scanner/project_scanner.dart';
+import 'package:flutter_auditor/utils/baseline_helper.dart';
 import 'package:flutter_auditor/utils/ignore_config_helper.dart';
 
 /// Executes a Flutter security audit.
@@ -32,6 +35,25 @@ class AuditCommand extends Command<int> {
       ..addFlag(
         'open',
         help: 'Open the generated HTML report in the default browser.',
+      )
+      ..addOption(
+        'json',
+        help: 'Write a JSON report to this path.',
+        valueHelp: 'audit_report.json',
+      )
+      ..addOption(
+        'sarif',
+        help:
+            'Write a SARIF report to this path (consumed by GitHub code '
+            'scanning and other SARIF tooling).',
+        valueHelp: 'audit_report.sarif',
+      )
+      ..addFlag(
+        'update-baseline',
+        help:
+            'Write current findings to .flutter_auditor_baseline.json as '
+            'the accepted baseline, then exit. Future runs only fail on '
+            'newly introduced findings.',
       );
   }
 
@@ -56,11 +78,44 @@ class AuditCommand extends Command<int> {
     final rawResults = await engine.run(context);
 
     final ignoreConfig = await IgnoreConfigHelper.load(context);
-    final (results, suppressedCount) = ignoreConfig.apply(rawResults, context);
+    final (afterIgnore, suppressedCount) = ignoreConfig.apply(
+      rawResults,
+      context,
+    );
 
     if (suppressedCount > 0) {
       print(
         'ⓘ $suppressedCount finding(s) suppressed by .flutter_auditor_ignore.yaml',
+      );
+      print('');
+    }
+
+    if (argResults!.flag('update-baseline')) {
+      await BaselineHelper.write(afterIgnore, context);
+      final total = afterIgnore.fold<int>(
+        0,
+        (sum, run) => sum + run.result.issues.length,
+      );
+      print(
+        '✅ Baseline written to ${context.baselineFile.path} '
+        '($total finding(s) recorded).',
+      );
+      print('   Future runs will only fail on newly introduced findings.');
+      return 0;
+    }
+
+    final baselineConfig = await BaselineHelper.load(context);
+    final (results, baselinedCount, exemptFromFailOn) = baselineConfig.apply(
+      afterIgnore,
+      context,
+    );
+
+    if (baselinedCount > 0) {
+      final visibleCount = exemptFromFailOn.length;
+      print(
+        'ⓘ $baselinedCount pre-existing finding(s) accepted via '
+        '.flutter_auditor_baseline.json'
+        '${visibleCount > 0 ? ' ($visibleCount critical/high still shown, non-blocking)' : ''}',
       );
       print('');
     }
@@ -78,6 +133,7 @@ class AuditCommand extends Command<int> {
       context: context,
       verbose: verbose,
       failOn: failOn,
+      exemptFromFailOn: exemptFromFailOn,
     );
 
     final htmlPath = argResults!.option('html');
@@ -94,6 +150,30 @@ class AuditCommand extends Command<int> {
       if (argResults!.flag('open')) {
         await _openInBrowser(file.path);
       }
+    }
+
+    final jsonPath = argResults!.option('json');
+    if (jsonPath != null) {
+      final jsonReporter = const JsonReporter();
+      final file = jsonReporter.writeReport(
+        results,
+        context: context,
+        outputPath: jsonPath,
+      );
+      print('');
+      print('📄 JSON report written to: ${file.path}');
+    }
+
+    final sarifPath = argResults!.option('sarif');
+    if (sarifPath != null) {
+      final sarifReporter = const SarifReporter();
+      final file = sarifReporter.writeReport(
+        results,
+        context: context,
+        outputPath: sarifPath,
+      );
+      print('');
+      print('📄 SARIF report written to: ${file.path}');
     }
 
     return exitCode;
