@@ -248,7 +248,7 @@ how many were suppressed (`ⓘ N finding(s) suppressed by
 
 The `--html` report shows the same findings with a severity chart:
 
-![HTML report](doc/html-report-screenshot.png)
+![HTML report](docs/html-report-screenshot.png)
 
 ## Exit codes
 
