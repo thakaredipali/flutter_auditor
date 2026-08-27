@@ -11,6 +11,7 @@ import 'package:flutter_auditor/reporter/sarif_reporter.dart';
 import 'package:flutter_auditor/scanner/project_scanner.dart';
 import 'package:flutter_auditor/utils/baseline_helper.dart';
 import 'package:flutter_auditor/utils/ignore_config_helper.dart';
+import 'package:flutter_auditor/utils/spinner.dart';
 
 /// Executes a Flutter security audit.
 class AuditCommand extends Command<int> {
@@ -75,7 +76,10 @@ class AuditCommand extends Command<int> {
 
     final registry = const AuditRegistry();
     final engine = AuditEngine(audits: registry.getAudits());
+
+    final spinner = Spinner('Running audits...')..start();
     final rawResults = await engine.run(context);
+    spinner.stop();
 
     final ignoreConfig = await IgnoreConfigHelper.load(context);
     final (afterIgnore, suppressedCount) = ignoreConfig.apply(

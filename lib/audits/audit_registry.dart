@@ -8,6 +8,7 @@ import 'package:flutter_auditor/audits/android/network_security_config_audit.dar
 import 'package:flutter_auditor/audits/android/release_signing_audit.dart';
 import 'package:flutter_auditor/audits/assets/overlarge_asset_audit.dart';
 import 'package:flutter_auditor/audits/assets/unused_asset_audit.dart';
+import 'package:flutter_auditor/audits/build/obfuscation_audit.dart';
 import 'package:flutter_auditor/audits/dependencies/dependency_hygiene_audit.dart';
 import 'package:flutter_auditor/audits/dependencies/unused_dependency_audit.dart';
 import 'package:flutter_auditor/audits/ios/app_transport_security_audit.dart';
@@ -33,6 +34,7 @@ class AuditRegistry {
       NetworkSecurityConfigAudit(),
       BackupRulesAudit(),
       ReleaseSigningAudit(),
+      ObfuscationAudit(),
       HardcodedSecretsAudit(),
       InsecureNetworkAudit(),
       InsecureStorageAudit(),

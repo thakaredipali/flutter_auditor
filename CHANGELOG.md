@@ -1,3 +1,11 @@
+## 1.3.0
+
+- New audit: Obfuscation Audit — flags an Android release buildType that
+  doesn't enable `minifyEnabled`/`isMinifyEnabled` (R8/ProGuard), and
+  scripted `flutter build` release invocations (GitHub Actions workflows,
+  Fastlane `Fastfile`, `codemagic.yaml`, `bitrise.yml`, `Makefile`) missing
+  the `--obfuscate` flag.
+
 ## 1.2.0
 
 - New: `--update-baseline` snapshots current findings into

@@ -176,6 +176,7 @@ how many were suppressed (`ⓘ N finding(s) suppressed by
 - Network Security Configuration (cleartext traffic, trusted user certificates)
 - Missing or misconfigured backup rules / data extraction rules
 - Release builds signed with the debug key, hardcoded signing credentials in `build.gradle`, and an un-gitignored `key.properties`
+- Release builds not minified/obfuscated (`minifyEnabled`/R8), and scripted `flutter build` release commands missing `--obfuscate`
 
 **iOS**
 - App Transport Security exceptions (arbitrary loads, weak minimum TLS version)
@@ -200,7 +201,7 @@ how many were suppressed (`ⓘ N finding(s) suppressed by
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║              FLUTTER APP SECURITY & DEPENDENCY AUDIT            ║
+║              FLUTTER APP SECURITY & DEPENDENCY AUDIT         ║
 ╚══════════════════════════════════════════════════════════════╝
 
 📁 Project   : my_app

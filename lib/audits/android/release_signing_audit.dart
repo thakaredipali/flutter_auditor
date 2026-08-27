@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import '../../models/audit.dart';
 import '../../models/audit_result.dart';
 import '../../models/project_context.dart';
 import '../../models/security_issue.dart';
 import '../../models/severity.dart';
+import '../../utils/gradle_helper.dart';
 
 /// Checks the Android release signing configuration for the debug keystore
 /// being used to sign release builds, signing credentials hardcoded
@@ -40,7 +39,7 @@ class ReleaseSigningAudit extends Audit {
   Future<AuditResult> run(ProjectContext context) async {
     final issues = <SecurityIssue>[];
 
-    final gradleFile = _findBuildGradle(context);
+    final gradleFile = GradleHelper.findAppBuildGradle(context);
 
     if (gradleFile != null) {
       final content = await gradleFile.readAsString();
@@ -54,24 +53,12 @@ class ReleaseSigningAudit extends Audit {
     return AuditResult(issues: issues);
   }
 
-  File? _findBuildGradle(ProjectContext context) {
-    if (context.androidAppBuildGradle.existsSync()) {
-      return context.androidAppBuildGradle;
-    }
-
-    if (context.androidAppBuildGradleKts.existsSync()) {
-      return context.androidAppBuildGradleKts;
-    }
-
-    return null;
-  }
-
   void _checkDebugSigningForRelease(
     String content,
     String file,
     List<SecurityIssue> issues,
   ) {
-    final releaseBlock = _extractBlock(content, 'release');
+    final releaseBlock = GradleHelper.extractBlock(content, 'release');
 
     if (releaseBlock == null || !_debugSigningPattern.hasMatch(releaseBlock)) {
       return;
@@ -169,29 +156,4 @@ class ReleaseSigningAudit extends Audit {
     );
   }
 
-  /// Extracts the content between the first top-level `<blockName> {` and
-  /// its matching closing brace, tracking nested braces so unrelated `{}`
-  /// pairs inside the block (conditionals, nested blocks) don't truncate
-  /// the match early. Returns null if the block isn't found.
-  String? _extractBlock(String content, String blockName) {
-    final startMatch = RegExp('$blockName\\s*\\{').firstMatch(content);
-
-    if (startMatch == null) {
-      return null;
-    }
-
-    var depth = 1;
-    var i = startMatch.end;
-
-    while (i < content.length && depth > 0) {
-      if (content[i] == '{') {
-        depth++;
-      } else if (content[i] == '}') {
-        depth--;
-      }
-      i++;
-    }
-
-    return content.substring(startMatch.end, depth == 0 ? i - 1 : i);
-  }
 }
