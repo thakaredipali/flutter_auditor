@@ -13,6 +13,7 @@ import 'package:flutter_auditor/audits/dependencies/dependency_hygiene_audit.dar
 import 'package:flutter_auditor/audits/dependencies/unused_dependency_audit.dart';
 import 'package:flutter_auditor/audits/ios/app_transport_security_audit.dart';
 import 'package:flutter_auditor/audits/ios/file_sharing_audit.dart';
+import 'package:flutter_auditor/audits/ios/privacy_manifest_audit.dart';
 import 'package:flutter_auditor/audits/ios/usage_description_audit.dart';
 import 'package:flutter_auditor/audits/network/insecure_network_audit.dart';
 import 'package:flutter_auditor/audits/secrets/hardcoded_secrets_audit.dart';
@@ -41,6 +42,7 @@ class AuditRegistry {
       AppTransportSecurityAudit(),
       FileSharingAudit(),
       UsageDescriptionAudit(),
+      PrivacyManifestAudit(),
       DependencyHygieneAudit(),
       UnusedDependencyAudit(),
       UnusedAssetAudit(),

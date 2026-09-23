@@ -48,6 +48,14 @@ class ProjectContext {
   /// ios directory
   Directory get iosDirectory => Directory('$rootPath/ios');
 
+  /// ios/Runner — the app target's native sources and resources.
+  Directory get iosRunnerDirectory => Directory('$rootPath/ios/Runner');
+
   /// Info.plist
   File get iosInfoPlist => File('$rootPath/ios/Runner/Info.plist');
+
+  /// The Runner Xcode project file, which lists the files bundled into
+  /// the app.
+  File get iosXcodeProject =>
+      File('$rootPath/ios/Runner.xcodeproj/project.pbxproj');
 }

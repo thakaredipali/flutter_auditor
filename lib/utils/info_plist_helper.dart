@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:xml/xml.dart';
 
 import '../models/project_context.dart';
@@ -6,9 +8,12 @@ import '../models/project_context.dart';
 class InfoPlistHelper {
   const InfoPlistHelper._();
 
-  static Future<Map<String, dynamic>?> load(ProjectContext context) async {
-    final plist = context.iosInfoPlist;
+  static Future<Map<String, dynamic>?> load(ProjectContext context) =>
+      loadFile(context.iosInfoPlist);
 
+  /// Parses any XML property list file (e.g. PrivacyInfo.xcprivacy).
+  /// Returns null if the file is missing or is not a valid XML plist.
+  static Future<Map<String, dynamic>?> loadFile(File plist) async {
     if (!await plist.exists()) {
       return null;
     }
