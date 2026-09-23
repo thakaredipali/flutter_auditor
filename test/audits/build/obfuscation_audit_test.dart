@@ -119,9 +119,30 @@ android {
       expect(result.hasIssues, isFalse);
     });
 
+    test('detects a scripted flutter build missing --obfuscate in a GitHub '
+        'Actions workflow', () async {
+      final context = await createProjectContextWithFiles(
+        files: {
+          '.github/workflows/release.yml': '''
+jobs:
+  build:
+    steps:
+      - run: flutter build appbundle --release
+''',
+        },
+      );
+
+      final result = await audit.run(context);
+
+      final issue = result.issues.singleWhere(
+        (issue) => issue.title.contains('--obfuscate'),
+      );
+      expect(issue.severity, Severity.low);
+      expect(issue.file, contains('release.yml'));
+    });
+
     test(
-      'detects a scripted flutter build missing --obfuscate in a GitHub '
-      'Actions workflow',
+      'does not flag a flutter build that already passes --obfuscate',
       () async {
         final context = await createProjectContextWithFiles(
           files: {
@@ -129,37 +150,16 @@ android {
 jobs:
   build:
     steps:
-      - run: flutter build appbundle --release
+      - run: flutter build appbundle --release --obfuscate --split-debug-info=build/symbols
 ''',
           },
         );
 
         final result = await audit.run(context);
 
-        final issue = result.issues.singleWhere(
-          (issue) => issue.title.contains('--obfuscate'),
-        );
-        expect(issue.severity, Severity.low);
-        expect(issue.file, contains('release.yml'));
+        expect(result.hasIssues, isFalse);
       },
     );
-
-    test('does not flag a flutter build that already passes --obfuscate', () async {
-      final context = await createProjectContextWithFiles(
-        files: {
-          '.github/workflows/release.yml': '''
-jobs:
-  build:
-    steps:
-      - run: flutter build appbundle --release --obfuscate --split-debug-info=build/symbols
-''',
-        },
-      );
-
-      final result = await audit.run(context);
-
-      expect(result.hasIssues, isFalse);
-    });
 
     test('does not flag a flutter build web invocation', () async {
       final context = await createProjectContextWithFiles(
@@ -180,9 +180,7 @@ jobs:
 
     test('scans Fastfile, codemagic.yaml, bitrise.yml, and Makefile', () async {
       final context = await createProjectContextWithFiles(
-        files: {
-          'fastlane/Fastfile': 'sh("flutter build ios --release")',
-        },
+        files: {'fastlane/Fastfile': 'sh("flutter build ios --release")'},
       );
 
       final result = await audit.run(context);

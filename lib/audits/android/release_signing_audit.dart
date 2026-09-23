@@ -155,5 +155,4 @@ class ReleaseSigningAudit extends Audit {
       ),
     );
   }
-
 }
