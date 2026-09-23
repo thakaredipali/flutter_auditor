@@ -1,4 +1,4 @@
-## Unreleased
+## 1.4.0
 
 - New audit: Privacy Manifest Audit — flags required-reason APIs
   (file timestamps, boot time, disk space, active keyboards, user

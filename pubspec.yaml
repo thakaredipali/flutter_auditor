@@ -1,6 +1,6 @@
 name: flutter_auditor
 description: A CLI that audits Flutter projects for security, dependency, and asset hygiene issues.
-version: 1.3.0
+version: 1.4.0
 repository: https://github.com/thakaredipali/flutter_auditor
 issue_tracker: https://github.com/thakaredipali/flutter_auditor/issues
 
