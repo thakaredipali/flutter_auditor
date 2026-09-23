@@ -1,0 +1,6 @@
+# .pubignore replaces .gitignore for `dart pub publish`, so repeat its entries.
+.dart_tool/
+
+# GitHub-only files.
+.github/
+action.yml

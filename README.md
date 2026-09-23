@@ -182,6 +182,7 @@ how many were suppressed (`ⓘ N finding(s) suppressed by
 - App Transport Security exceptions (arbitrary loads, weak minimum TLS version)
 - `UIFileSharingEnabled` exposing the Documents directory
 - Missing, empty, or mismatched usage-description strings (camera, location, etc.)
+- Privacy manifest (`PrivacyInfo.xcprivacy`): required-reason APIs used by the app's own native code but not declared (App Store rejection ITMS-91053), invalid reason codes, a manifest missing from the Xcode project, and tracking enabled without tracking domains
 
 **Cross-platform (Dart source)**
 - Hardcoded secrets (API keys, tokens, credentials, private keys)
@@ -254,7 +255,51 @@ The `--html` report shows the same findings with a severity chart:
 ## Exit codes
 
 `0` if no issue meets the `--fail-on` threshold, `1` otherwise. Maintenance
-findings (outdated/unused dependencies) never affect the exit code.
+findings (outdated/unused dependencies) never affect the exit code. Invalid
+command-line usage exits with `64`.
+
+## GitHub Actions
+
+Run the audit on every push and pull request, with findings shown as
+code scanning alerts and PR-line annotations:
+
+```yaml
+# .github/workflows/flutter_auditor.yml
+name: Flutter Auditor
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  security-events: write # needed to upload SARIF to code scanning
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: thakaredipali/flutter_auditor@v1
+        with:
+          fail-on: high
+```
+
+| Input | Default | Description |
+| --- | --- | --- |
+| `working-directory` | `.` | Directory containing the app's `pubspec.yaml`. |
+| `fail-on` | `high` | Minimum severity that fails the step (`none` to never fail). |
+| `upload-sarif` | `true` | Upload findings to GitHub code scanning. |
+| `sarif-category` | `flutter_auditor` | Code scanning category — set a distinct one per project when auditing several in one repo. |
+| `args` | | Extra arguments for `flutter_auditor audit`, e.g. `--verbose`. |
+
+The SARIF report is uploaded even when the audit fails, so annotations
+appear on exactly the runs where they matter. Code scanning is free for
+public repositories; private repositories need GitHub Advanced Security
+(set `upload-sarif: false` otherwise). Findings' file paths are relative
+to `working-directory`, so PR-line annotations line up when it is the
+repository root.
 
 ## License
 

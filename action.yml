@@ -1,0 +1,76 @@
+name: Flutter Auditor
+description: Audit a Flutter project for security, dependency, and asset hygiene issues, with optional GitHub code scanning upload.
+author: thakaredipali
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  working-directory:
+    description: Path to the Flutter project (the directory containing pubspec.yaml).
+    default: .
+  fail-on:
+    description: "Minimum severity that fails the step: critical, high, medium, low, info, or none."
+    default: high
+  upload-sarif:
+    description: "Upload findings to GitHub code scanning (requires `security-events: write` permission)."
+    default: "true"
+  sarif-category:
+    description: Code scanning category, to keep results separate when auditing several projects in one repo.
+    default: flutter_auditor
+  args:
+    description: Extra arguments passed to `flutter_auditor audit` (e.g. `--verbose --html audit_report.html`).
+    default: ""
+
+outputs:
+  exit-code:
+    description: The audit's exit code (0 = passed, 1 = findings met the fail-on threshold).
+    value: ${{ steps.audit.outputs.exit-code }}
+  sarif-file:
+    description: Path to the generated SARIF report.
+    value: ${{ steps.audit.outputs.sarif-file }}
+
+runs:
+  using: composite
+  steps:
+    - uses: dart-lang/setup-dart@v1
+      with:
+        sdk: stable
+
+    # Activate from the action's own checkout so the pinned action ref and
+    # the auditor version always match.
+    - name: Install flutter_auditor
+      shell: bash
+      run: dart pub global activate --source path "$GITHUB_ACTION_PATH"
+
+    - name: Run audit
+      id: audit
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        FAIL_ON: ${{ inputs.fail-on }}
+        EXTRA_ARGS: ${{ inputs.args }}
+      run: |
+        sarif="$RUNNER_TEMP/flutter_auditor.sarif"
+        set +e
+        # shellcheck disable=SC2086
+        dart pub global run flutter_auditor audit \
+          --fail-on "$FAIL_ON" --sarif "$sarif" $EXTRA_ARGS
+        code=$?
+        set -e
+        echo "exit-code=$code" >> "$GITHUB_OUTPUT"
+        echo "sarif-file=$sarif" >> "$GITHUB_OUTPUT"
+
+    - name: Upload SARIF to code scanning
+      if: inputs.upload-sarif == 'true' && hashFiles(steps.audit.outputs.sarif-file) != ''
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ steps.audit.outputs.sarif-file }}
+        category: ${{ inputs.sarif-category }}
+
+    - name: Fail on findings
+      if: steps.audit.outputs.exit-code != '0'
+      shell: bash
+      run: |
+        echo "::error::flutter_auditor found issues at or above '${{ inputs.fail-on }}' severity (exit code ${{ steps.audit.outputs.exit-code }})."
+        exit ${{ steps.audit.outputs.exit-code }}

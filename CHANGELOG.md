@@ -1,3 +1,17 @@
+## Unreleased
+
+- New audit: Privacy Manifest Audit — flags required-reason APIs
+  (file timestamps, boot time, disk space, active keyboards, user
+  defaults) used by the app's own iOS native code but not declared in
+  `PrivacyInfo.xcprivacy`, invalid reason codes, a manifest that exists
+  but isn't in the Xcode project (so never bundled), and
+  `NSPrivacyTracking` without tracking domains.
+- Fix: the process exit code now reflects the audit result. Previously
+  `flutter_auditor` always exited `0` even when findings met `--fail-on`,
+  so CI pipelines never failed. Invalid usage now exits `64`.
+- New: GitHub Action (`uses: thakaredipali/flutter_auditor@v1`) that runs
+  the audit and uploads SARIF findings to GitHub code scanning.
+
 ## 1.3.0
 
 - New audit: Obfuscation Audit — flags an Android release buildType that
