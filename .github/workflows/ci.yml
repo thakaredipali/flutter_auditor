@@ -14,7 +14,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: stable
@@ -29,11 +29,8 @@ jobs:
   publish-dry-run:
     name: pub publish --dry-run
     runs-on: ubuntu-latest
-    # Informational: pub warns about the plural docs/ directory, which is
-    # kept deliberately, and any warning makes --dry-run exit non-zero.
-    continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: stable

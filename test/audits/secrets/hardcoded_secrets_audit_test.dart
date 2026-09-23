@@ -151,7 +151,10 @@ const password = "SuperSecretPassw0rd";
       final result = await audit.run(context);
 
       expect(result.issues.length, 1);
-      expect(result.issues.first.file, contains('src/services'));
+      expect(
+        result.issues.first.file.replaceAll(r'\', '/'),
+        contains('src/services'),
+      );
     });
 
     test('ignores firebase_options.dart', () async {

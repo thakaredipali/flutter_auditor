@@ -250,7 +250,7 @@ how many were suppressed (`ⓘ N finding(s) suppressed by
 
 The `--html` report shows the same findings with a severity chart:
 
-![HTML report](docs/html-report-screenshot.png)
+![HTML report](https://raw.githubusercontent.com/thakaredipali/flutter_auditor/main/doc/html-report-screenshot.png)
 
 ## Exit codes
 

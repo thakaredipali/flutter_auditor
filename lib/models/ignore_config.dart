@@ -77,9 +77,12 @@ class IgnoreConfig {
     return filePatterns.any((pattern) => _matchesGlob(relativeFile, pattern));
   }
 
+  /// [path] is already forward-slash (see [PathUtils.relativeToRoot]), so
+  /// normalize both sides POSIX-style: the host-style `p.normalize` would
+  /// turn `/` into `\` on Windows, letting `*` (`[^/]*`) cross directories.
   bool _matchesGlob(String path, String pattern) {
-    final normalizedPath = p.normalize(path);
-    final normalizedPattern = p.normalize(pattern);
+    final normalizedPath = p.posix.normalize(path);
+    final normalizedPattern = p.posix.normalize(pattern.replaceAll(r'\', '/'));
 
     final regexSource = RegExp.escape(
       normalizedPattern,
